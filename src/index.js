@@ -5,10 +5,11 @@ import './index.css';
 import App from './App';
 // import registerServiceWorker from './registerServiceWorker';
 import reportWebVitals from './reportWebVitals';
+import { API_WS_ROOT } from './constants'
 
 ReactDOM.render(
 
-    <ActionCableProvider>
+    <ActionCableProvider url={API_WS_ROOT}>
       <App />
     </ActionCableProvider>,
   

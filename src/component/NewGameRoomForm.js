@@ -3,10 +3,10 @@ import { API_ROOT, HEADERS } from '../constants';
 
 const NewConversationForm = () => {
 
-    const [title, setTitle] = useState('')
+    const [name, setName] = useState('')
 
     const changeHandler = (event) => {
-        setTitle(event.target.value)
+        setName(event.target.value)
     }
 
     const submitHandler = (event) => {
@@ -14,9 +14,9 @@ const NewConversationForm = () => {
         fetch(`${API_ROOT}/game_rooms`, {
             method: 'POST',
             headers: HEADERS,
-            body: JSON.stringify(title)
+            body: JSON.stringify({name})
         });
-        setTitle('')
+        setName('')
     }
 
     return (
@@ -28,8 +28,8 @@ const NewConversationForm = () => {
                 <br/>
                 <input
                     type="text"
-                    value={title}
-                    onchange={changeHandler}
+                    value={name}
+                    onChange={changeHandler}
                 />
                 <input type='submit'/>
             </form>

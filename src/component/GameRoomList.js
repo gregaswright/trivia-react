@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { ActionCable } from "react-actioncable-provider";
 import { API_ROOT } from "../constants";
-// import NewConversationForm from './NewConversationForm';
-// import MessagesArea from './MessageArea';
+import NewGameRoomForm from './NewGameRoomForm'
+import MessagesArea from './MessageArea';
 import Cable from './Cable';
 
 function GameRoomList() {
@@ -14,10 +14,9 @@ function GameRoomList() {
         fetch(`${API_ROOT}/game_rooms`)
         .then(res => res.json())
         .then(gameRooms => setGameRooms(gameRooms));
-    });
+    } ,[]);
 
-
-    // console.log(gameRooms)
+    console.log(gameRooms)
 
     const clickHandler = (id) => {
         setActiveGameRoom(id);
@@ -38,22 +37,7 @@ function GameRoomList() {
         setGameRooms(gRs);
     };
 
-    const mapGameRooms = (gRs, handleClick) => {
-        return gRs.map( gR => {
-            return (
-                <li key={gR.id} onClick={() => handleClick(gR.id)}>
-                    {gR.name}
-                </li>
-            );
-        });
-    };
-
-    const findActiveGameRooms = (gRs, activeGRs) => {
-        return gRs.find (
-            gR => gR.id === activeGRs
-        );
-    };
-
+    
     return (
         <div>
             <ActionCable
@@ -61,15 +45,33 @@ function GameRoomList() {
             onReceived={handleReceivedGameRoom}
             />
             {gameRooms.length ? (
-            <Cable
+                <Cable
                 gameRooms={gameRooms}
                 handleReceivedMessage={handleReceivedMessages}
-            /> ) : null}
+                /> ) : null}
         <h2>Game Rooms</h2>
         <ul>{mapGameRooms(gameRooms, clickHandler)}</ul>
-        </div>
-    )
-}
-
-export default GameRoomList
-
+        <NewGameRoomForm />
+        {activeGameRoom ? (<MessagesArea gameRoom={findActiveGameRooms(gameRooms, activeGameRoom)}/>) : null}
+            </div>
+            )
+        }
+        
+        export default GameRoomList
+        
+        
+        const mapGameRooms = (gRs, handleClick) => {
+            return gRs.map( gR => {
+                return (
+                    <li key={gR.id} onClick={() => handleClick(gR.id)}>
+                        {gR.name}
+                    </li>
+                );
+            });
+        };
+    
+        const findActiveGameRooms = (gRs, activeGRs) => {
+            return gRs.find (
+                gR => gR.id === activeGRs
+            );
+        };
